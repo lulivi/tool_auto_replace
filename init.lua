@@ -23,14 +23,18 @@ SOFTWARE.
 -- Auto replace tools when broken
 local tool_materials = {"wood", "stone", "bronze", "steel", "mese", "diamond"}
 local tool_types = {
-    "default:pick_", "default:shovel_", "default:axe_", "default:sword_"
+    "default:pick_",
+    "default:shovel_",
+    "default:axe_",
+    "default:sword_",
+    "farming:hoe_",
 }
 
 --- Find an item by it's name in the chosen list.
 -- @param item_name name of the item to search
 -- @param list list in which search the item
 -- @return the index and the item if is found or 0 and nil otherwise
-local function find_item (item_name, list)
+local function find_item(item_name, list)
     for index, item in pairs(list) do
         if item:get_name() == item_name then return index, item end
     end
@@ -45,7 +49,7 @@ end
 -- @param user ObjectRef player object that used the itemstack
 -- @param node ObjectRef node object target of the itemstack instance
 -- @return the itemstack after performing the necessary operations
-local function new_after_use (itemstack, user, node, digparams)
+local function new_after_use(itemstack, user, node, digparams)
     local inv_stack_index = user:get_wield_index()
     local tool_name = itemstack:get_name()
     itemstack:add_wear(digparams.wear)
@@ -73,7 +77,8 @@ end
 
 for _, tool_type_prefix in pairs(tool_types) do
     for _, tool_material in pairs(tool_materials) do
-        minetest.override_item(tool_type_prefix .. tool_material,
-                               {after_use = new_after_use})
+        minetest.override_item(
+            tool_type_prefix .. tool_material,
+            {after_use = new_after_use})
     end
 end
