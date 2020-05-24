@@ -55,7 +55,6 @@ local function new_after_use(itemstack, user, node, digparams)
     itemstack:add_wear(digparams.wear)
 
     if itemstack:get_wear() == 0 then
-        minetest.sound_play("default_tool_breaks")
         local tool_type_prefix = string.match(tool_name, '^.*_')
         local inv = user:get_inventory()
         local inv_main_list = inv:get_list("main")
@@ -65,6 +64,7 @@ local function new_after_use(itemstack, user, node, digparams)
             local found_index, found_itemstack =
                 find_item(tool_type_prefix .. tool_material, inv_main_list)
             if found_index > 0 then
+                minetest.sound_play("default_tool_breaks")
                 itemstack:replace(found_itemstack)
                 inv:set_stack("main", found_index, ItemStack(nil))
                 break
